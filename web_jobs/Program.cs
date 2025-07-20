@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using web_jobs.Models;
@@ -6,15 +6,21 @@ using web_jobs.Repository;
 using Microsoft.AspNetCore.Identity.UI;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Kết nối CSDL
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Cấu hình Identity
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders()
-.AddDefaultUI(); // THÊM DÒNG NÀY
-// Add services to the container.
+.AddDefaultUI();
+
+// Đăng ký dịch vụ DI
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 builder.Services.AddScoped<IJobRepository, EFJobRepository>();
@@ -23,52 +29,54 @@ builder.Services.AddScoped<IEmployerRepository, EFEmployerRepository>();
 builder.Services.AddScoped<IJobTypeRepository, EFJobTypeRepository>();
 builder.Services.AddScoped<ICandidateProfileRepository, EFCandidateProfileRepository>();
 builder.Services.AddScoped<ISavedJobRepository, EFSavedJobRepository>();
-builder.Services.AddRazorPages();  // Thêm dòng này
-
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Cấu hình middleware pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
 app.MapRazorPages();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// 👉 Gọi seed dữ liệu tại đây
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
     await SeedAdminUserAsync(userManager, roleManager);
 }
 
+// 👉 Hàm seed role và user Admin
 async Task SeedAdminUserAsync(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
 {
-    string adminRoleName = "Admin";
-    string adminEmail = "Bon@gmail.com";  // đổi email theo bạn
-    string adminPassword = "Bon123456@";      // đổi mật khẩu mạnh hơn khi dùng thật
+    // Danh sách các vai trò cần tạo
+    string[] roles = new[] { "Admin", "Employer", "Candidate" };
 
-    if (!await roleManager.RoleExistsAsync(adminRoleName))
+    // Tạo các vai trò nếu chưa có
+    foreach (var role in roles)
     {
-        await roleManager.CreateAsync(new IdentityRole(adminRoleName));
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
     }
+
+    // Tạo tài khoản admin mẫu
+    string adminEmail = "Bon@gmail.com";
+    string adminPassword = "Bon123456@";
 
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
     if (adminUser == null)
@@ -87,9 +95,10 @@ async Task SeedAdminUserAsync(UserManager<AppUser> userManager, RoleManager<Iden
         }
     }
 
-    if (!await userManager.IsInRoleAsync(adminUser, adminRoleName))
+    // Gán vai trò Admin nếu chưa có
+    if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
     {
-        await userManager.AddToRoleAsync(adminUser, adminRoleName);
+        await userManager.AddToRoleAsync(adminUser, "Admin");
     }
 }
 
