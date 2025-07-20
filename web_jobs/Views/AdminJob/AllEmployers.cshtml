@@ -1,0 +1,76 @@
+﻿@model List<web_jobs.Models.Employer>
+
+<h2>Danh sách tất cả công ty</h2>
+<p>
+    <a asp-action="AllEmployers" asp-route-filter="all" class="btn btn-secondary">Tất cả</a>
+    <a asp-action="AllEmployers" asp-route-filter="approved" class="btn btn-success">Đã duyệt</a>
+    <a asp-action="AllEmployers" asp-route-filter="pending" class="btn btn-warning">Đang chờ</a>
+    <a asp-action="AllEmployers" asp-route-filter="rejected" class="btn btn-danger">Bị từ chối</a>
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tên công ty</th>
+            <th>Email</th>
+            <th>Quy mô</th>
+            <th>Mô tả</th>
+            <th>Logo</th>
+            <th>Trạng thái</th>
+            <th>Chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employer in Model)
+        {
+            <tr>
+                <td>@employer.CompanyName</td>
+                <td>@employer.CompanyEmail</td>
+                <td>@employer.CompanySize</td>
+                <td>
+                    @{
+                        var shortDesc = employer.CompanyDescription?.Length > 50
+                        ? employer.CompanyDescription.Substring(0, 50) + "..."
+                        : employer.CompanyDescription;
+                    }
+                    @Html.Raw(shortDesc)
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(employer.CompanyLogo))
+                    {
+                        <img src="~/images/@employer.CompanyLogo" alt="Logo" width="80" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Chưa có</span>
+                    }
+                </td>
+                <td>
+                    @if (string.IsNullOrEmpty(employer.Status))
+                    {
+                        <span>Chưa có trạng thái</span>
+                    }
+                    else if (employer.Status.ToLower() == "approved")
+                    {
+                        <span style="color: green;">Đã được duyệt ✔️</span>
+                    }
+                    else if (employer.Status.ToLower() == "pending")
+                    {
+                        <span style="color: orange;">Đang chờ duyệt ⏳</span>
+                    }
+                    else if (employer.Status.ToLower() == "rejected")
+                    {
+                        <span style="color: red;">Bị từ chối ❌</span>
+                    }
+                    else
+                    {
+                        <span>@employer.Status</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="EmployerDetails" asp-route-id="@employer.ID" class="btn btn-primary btn-sm">Xem</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

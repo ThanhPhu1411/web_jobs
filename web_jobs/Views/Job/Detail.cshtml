@@ -1,0 +1,118 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model web_jobs.Models.Job
+@{
+    ViewData["Title"] = "Chi tiết tin tuyển dụng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+ 
+}
+
+<style>
+    .job-detail-container {
+        max-width: 800px;
+        margin: 40px auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        animation: fadeIn 0.5s ease;
+    }
+
+        .job-detail-container h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+    .job-info p {
+        margin-bottom: 10px;
+    }
+
+    .job-label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .job-value {
+        color: #555;
+    }
+
+    .job-actions {
+        margin-top: 20px;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.85em;
+        font-weight: 600;
+        border-radius: 0.25rem;
+        color: #fff;
+    }
+
+    .bg-success {
+        background-color: #28a745;
+    }
+
+    .bg-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .bg-danger {
+        background-color: #dc3545;
+    }
+
+    .bg-secondary {
+        background-color: #6c757d;
+    }
+</style>
+
+<div class="job-detail-container">
+    <h2>Chi tiết việc làm </h2>
+
+    <div class="job-info">
+		<p><span class="job-label">Tiêu đề:</span> <span class="job-value">@Model.JobTitle</span></p>
+        <p><span class="job-label">Mô tả công việc:</span> <span class="job-value">@Model.JobDescription</span></p>
+        <p><span class="job-label">Yêu cầu:</span> <span class="job-value">@Model.Requirements</span></p>
+        <p><span class="job-label">Lợi ích:</span> <span class="job-value">@Model.Benefits</span></p>
+        <p><span class="job-label">Lương:</span> <span class="job-value">@Model.Salary</span></p>
+        <p><span class="job-label">Địa điểm:</span> <span class="job-value">@Model.Locate</span></p>
+        <p><span class="job-label">Hạn chót:</span> <span class="job-value">@Model.ApplicationDeadline?.ToString("dd/MM/yyyy")</span></p>
+        <p><span class="job-label">Ngành:</span> <span class="job-value">@Model.Category?.Name</span></p>
+        <p><span class="job-label">Loại công việc:</span> <span class="job-value">@Model.JobType?.JobType_Name</span></p>
+        @{
+            var statusText = "";
+            var badgeClass = "";
+
+            switch (Model.Status?.ToLower())
+            {
+                case "approved":
+                    statusText = "🟢 Đã duyệt";
+                    badgeClass = "badge bg-success";
+                    break;
+                case "pending":
+                    statusText = "🟡 Đang chờ";
+                    badgeClass = "badge bg-warning";
+                    break;
+                case "rejected":
+                    statusText = "🔴 Bị từ chối";
+                    badgeClass = "badge bg-danger";
+                    break;
+                default:
+                    statusText = "❔ Không xác định";
+                    badgeClass = "badge bg-secondary";
+                    break;
+            }
+        }
+        <p>
+            <span class="job-label">Trạng thái:</span>
+            <span class="@badgeClass">@statusText</span>
+        </p>
+    </div>
+
+    <div class="job-actions">
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+
+        <a asp-action="Delete" asp-route-id="@Model.ID" class="btn btn-danger">Xóa</a>
+        <a asp-action="Update" asp-route-id="@Model.ID" class="btn btn-secondary">Chỉnh sửa</a>
+    </div>
+</div>

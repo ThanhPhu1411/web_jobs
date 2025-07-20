@@ -1,0 +1,116 @@
+﻿@model IEnumerable<web_jobs.Models.Job>
+
+@{
+    ViewData["Title"] = "Danh sách tin tuyển dụng ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .mb-4 {
+        margin-bottom: 1.5rem !important;
+        text-align: center;
+        font-size: 38px;
+        margin: 20px 20px;
+        font-weight: 600;
+    }
+
+    .btn-primary-add {
+        color: #fff;
+        background-color: #0d6efd;
+
+        border-color: #0d6efd;
+        margin-bottom: 25px !important;
+    }
+
+    .clickable-row {
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+        .clickable-row:hover {
+            background-color: #f1f1f1;
+        }
+</style>
+
+<h2 class="mb-4">Danh sách tin tuyển dụng </h2>
+<a asp-action="Add" class="btn btn-primary-add mb-3">Đăng tin tuyển dụng mới </a>
+<div class="mb-3">
+    <a asp-action="Index" asp-route-filter="approved" class="btn @(ViewBag.Filter == "approved" ? "btn-success" : "btn-outline-success")">
+        🟢 Đã duyệt (@ViewBag.ApprovedCount)
+    </a>
+    <a asp-action="Index" asp-route-filter="pending" class="btn @(ViewBag.Filter == "pending" ? "btn-warning" : "btn-outline-warning")">
+        🟡 Đang chờ (@ViewBag.PendingCount)
+    </a>
+    <a asp-action="Index" asp-route-filter="rejected" class="btn @(ViewBag.Filter == "rejected" ? "btn-danger" : "btn-outline-danger")">
+        🔴 Bị từ chối (@ViewBag.RejectedCount)
+    </a>
+    <a asp-action="Index" asp-route-filter="expired" class="btn @(ViewBag.Filter == "expired" ? "btn-dark" : "btn-outline-dark")">
+        ⏰ Hết hạn (@ViewBag.ExpiredCount)
+    </a>
+    <a asp-action="Index" class="btn @(string.IsNullOrEmpty(ViewBag.Filter) ? "btn-primary" : "btn-outline-primary")">
+        📋 Tất cả (@(ViewBag.ApprovedCount + ViewBag.PendingCount + ViewBag.RejectedCount))
+    </a>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Tiêu đề</th>
+            <th>Miêu tả</th>
+            <th>Yêu cầu</th>
+            <th>Lương</th>
+            <th>Địa điểm</th>
+            <th>Hạn chót</th>
+            <th>Ngành</th>
+            <th>Loại</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="9" class="text-center text-muted">Không có việc làm nào.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var job in Model)
+            {
+                var statusText = "";
+                var badgeClass = "";
+
+                switch (job.Status?.ToLower())
+                {
+                    case "approved":
+                        statusText = "🟢 Đã duyệt";
+                        badgeClass = "badge bg-success";
+                        break;
+                    case "pending":
+                        statusText = "🟡 Đang chờ";
+                        badgeClass = "badge bg-warning";
+                        break;
+                    case "rejected":
+                        statusText = "🔴 Bị từ chối";
+                        badgeClass = "badge bg-danger";
+                        break;
+                    default:
+                        statusText = "❔ Không xác định";
+                        badgeClass = "badge bg-secondary";
+                        break;
+                }
+
+                <tr class="clickable-row" 
+                onclick="location.href='@Url.Action("Detail", "Job", new { id = job.ID })'">
+                    <td>@job.JobTitle</td>
+                    <td>@job.JobDescription</td>
+                    <td>@job.Requirements</td>
+                    <td>@job.Salary</td>
+                    <td>@job.Locate</td>
+                    <td>@job.ApplicationDeadline?.ToString("dd/MM/yyyy")</td>
+                    <td>@job.Category?.Name</td>
+                    <td>@job.JobType?.JobType_Name</td>
+                    <td><span class="@badgeClass">@statusText</span></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -1,0 +1,19 @@
+﻿@model web_jobs.Models.CandidateProfile
+@{
+    ViewData["Title"] = "Xóa hồ sơ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-danger">Xác nhận xóa hồ sơ</h2>
+    <hr />
+    <p>Bạn có chắc chắn muốn xóa hồ sơ của <strong>@Model.UserName</strong> không?</p>
+
+    <div class="mt-4">
+        <form asp-action="Delete" asp-route-id="@Model.ID" method="post">
+            <input type="hidden" asp-for="ID" />
+            <button type="submit" class="btn btn-danger">Xóa</button>
+            <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+        </form>
+    </div>
+</div>

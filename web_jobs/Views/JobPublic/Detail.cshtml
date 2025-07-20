@@ -1,0 +1,131 @@
+﻿    @model web_jobs.Models.Job
+@{
+    var isCandidate = User.IsInRole("Candidate");
+}
+
+<style>
+    .job-detail-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    min-height: 80vh;
+    padding: 40px 20px;
+    animation: fadeIn 1s ease;
+    font-family: 'Segoe UI', sans-serif;
+    }
+
+
+    .job-left {
+    flex: 1;
+    min-width: 300px;
+    background: linear-gradient(to bottom right, #007bff, #00c6ff);
+    color: white;
+    padding: 40px;
+    border-radius: 12px 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    }
+
+    .job-left img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+
+    }
+
+    .job-left h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    z-index: 2;
+    color:#000;
+    font-weight: 600;
+    }
+
+    .job-left p {
+    font-size: 16px;
+    z-index: 2;
+    color: #000;
+    font-weight: 600;
+    }
+
+    .job-right {
+    flex: 2;
+    min-width: 300px;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 0 12px 12px 0;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+
+
+
+    .job-info p {
+    margin-bottom: 15px;
+    }
+
+    .job-label {
+    font-weight: 600;
+    color: #333;
+    }
+
+    .job-value {
+    color: #555;
+    margin-left: 5px;
+    }
+
+    .job-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    }
+
+    .job-actions .btn {
+    padding: 10px 25px;
+    font-size: 16px;
+    border-radius: 8px;
+    }
+
+</style>
+
+<div class="job-detail-wrapper">
+    <div class="job-left">
+        <img src="~/images/21.jpg" alt="Job Icon" />
+        <h2>“Bắt đầu từ một cơ hội – Tiến xa bằng chính bạn”</h2>
+        <p>Ứng tuyển hôm nay, chạm tới tương lai mai sau.</p>
+    </div>
+    <div class="job-right">
+        <h2>Chi tiết tin tuyển dụng</h2>
+        <div class="job-info">
+            <p><span class="job-label">Công việc:</span> <span class="job-value">@Model.JobTitle</span></p>
+            <p><span class="job-label">Mô tả công việc:</span> <span class="job-value">@Model.JobDescription</span></p>
+            <p><span class="job-label">Yêu cầu:</span> <span class="job-value">@Model.Requirements</span></p>
+            <p><span class="job-label">Lợi ích:</span> <span class="job-value">@Model.Benefits</span></p>
+            <p><span class="job-label">Lương:</span> <span class="job-value">@Model.Salary</span></p>
+            <p><span class="job-label">Địa điểm:</span> <span class="job-value">@Model.Locate</span></p>
+            <p><span class="job-label">Hạn chót:</span> <span class="job-value">@Model.ApplicationDeadline?.ToString("dd/MM/yyyy")</span></p>
+            <p><span class="job-label">Ngành:</span> <span class="job-value">@Model.Category?.Name</span></p>
+            <p><span class="job-label">Loại công việc:</span> <span class="job-value">@Model.JobType?.JobType_Name</span></p>
+        </div>
+        @if (!User.IsInRole("Admin") && !User.IsInRole("Employer"))
+        {
+            <div class="job-actions">
+                <form asp-action="SaveJob" asp-controller="JobPublic" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="jobId" value="@Model.ID" />
+                    <button type="submit" class="btn btn-outline-primary">Lưu công việc</button>
+                </form>
+                <a asp-action="ApplyJob" asp-controller="JobPublic" asp-route-jobId="@Model.ID" class="btn btn-success">Ứng tuyển ngay</a>
+            </div>
+            }
+        <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </div>

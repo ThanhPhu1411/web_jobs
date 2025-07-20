@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Thống kê dữ liệu";
+}
+<style>
+    /* Giới hạn style trong nav-tabs để không ảnh hưởng footer */
+    .nav-tabs .nav-link {
+        color: #000 !important; /* Màu chữ đen */
+    }
+
+        .nav-tabs .nav-link.active {
+            font-weight: bold;
+            border-bottom: 2px solid #000; /* Gạch chân tab đang chọn */
+            background-color: #f8f9fa; /* Màu nền nhẹ khi active */
+        }
+
+        .nav-tabs .nav-link:hover {
+            text-decoration: none;
+            color: #333 !important; /* Hover tối hơn nhẹ */
+        }
+</style>
+<h2>Thống kê dữ liệu</h2>
+
+<!-- Navigation bar -->
+<ul class="nav nav-tabs mb-3" id="dataNav">
+    <!-- Công việc -->
+    <li class="nav-item">
+        <a class="nav-link active" href="#" onclick="loadData('allJobs', this)">Tất cả công việc</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="loadData('approvedJobs', this)">Đã duyệt</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="loadData('pendingJobs', this)">Chờ duyệt</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="loadData('expiredJobs', this)">Hết hạn</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="loadData('jobsExpiringSoon', this)">Sắp hết hạn</a>
+    </li>
+
+    <!-- Công ty -->
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="loadData('allEmployers', this)">Tất cả công ty</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="loadData('approvedEmployers', this)">Công ty đã duyệt</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="loadData('pendingEmployers', this)">Công ty chờ duyệt</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="loadData('employersWithJobs', this)">Công ty có việc</a>
+    </li>
+</ul>
+
+<!-- Vùng dữ liệu sẽ load vào đây -->
+<div id="data-container">
+    <p>Đang tải dữ liệu...</p>
+</div>
+
+@section Scripts {
+    <script>
+        // Load mặc định là công việc đã duyệt
+        document.addEventListener("DOMContentLoaded", function () {
+            loadData('approvedJobs', document.querySelector('.nav-link.active'));
+        });
+
+        function loadData(type, element) {
+            // Xóa active cũ và gắn active mới
+            document.querySelectorAll('.nav-link').forEach(e => e.classList.remove('active'));
+            if (element) element.classList.add('active');
+
+            // Gọi partial từ controller
+            fetch(`/Admin/GetDataPartial?type=${type}`)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("data-container").innerHTML = html;
+                });
+        }
+    </script>
+}

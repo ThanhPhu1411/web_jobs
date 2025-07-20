@@ -1,0 +1,46 @@
+﻿@model IEnumerable<web_jobs.Models.Job>
+
+@{
+    ViewData["Title"] = "Tìm việc làm";
+    var keyword = ViewData["Keyword"] as string;
+    var location = ViewData["Location"] as string;
+    var category = ViewData["Category"] as string;
+}
+
+<h2 class="mb-4">Tìm việc làm</h2>
+
+<form asp-action="SearchJobs" method="get" class="mb-4">
+    <div class="row g-2">
+        <div class="col-md-4">
+            <input name="keyword" value="@keyword" class="form-control" placeholder="Từ khóa (ví dụ: Lập trình, Marketing...)" />
+        </div>
+        <div class="col-md-3">
+            <input name="location" value="@location" class="form-control" placeholder="Địa điểm" />
+        </div>
+        <div class="col-md-3">
+            <input name="category" value="@category" class="form-control" placeholder="Danh mục công việc" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
+        </div>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <p>Không tìm thấy công việc phù hợp.</p>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var job in Model)
+        {
+            <a asp-controller="JobPublic" asp-action="Detail" asp-route-id="@job.ID" class="list-group-item list-group-item-action">
+                <h5>@job.JobTitle</h5>
+                <p><strong>Địa điểm:</strong> @job.Locate</p>
+                <p><strong>Mức lương:</strong> @job.Salary</p>
+                <p><strong>Loại:</strong> @job.JobType?.JobType_Name</p>
+            </a>
+        }
+    </div>
+}

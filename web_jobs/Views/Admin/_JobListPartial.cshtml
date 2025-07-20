@@ -1,0 +1,59 @@
+﻿@model IEnumerable<web_jobs.Models.Job>
+
+<h4>Danh sách công việc: <span class="text-primary fw-bold">@ViewBag.TotalCount</span></h4>
+
+<table class="table table-bordered table-striped align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>Tiêu đề</th>
+            <th>Hạn nộp</th>
+            <th>Trạng thái</th>
+            <th>Nhà tuyển dụng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var job in Model)
+        {
+            string statusText;
+            string badgeClass;
+
+            switch (job.Status?.ToLower())
+            {
+                case "approved":
+                    statusText = "🟢 Đã duyệt";
+                    badgeClass = "badge bg-success";
+                    break;
+                case "pending":
+                    statusText = "🟡 Đang chờ";
+                    badgeClass = "badge bg-warning text-dark";
+                    break;
+                case "expired":
+                    statusText = "⚫ Hết hạn";
+                    badgeClass = "badge bg-dark";
+                    break;
+                case "expiringsoon":
+                    statusText = "🟠 Sắp hết hạn";
+                    badgeClass = "badge bg-orange text-white"; // cần custom thêm CSS bên dưới
+                    break;
+                default:
+                    statusText = "❔ Không xác định";
+                    badgeClass = "badge bg-secondary";
+                    break;
+            }
+
+            <tr>
+                <td>@job.JobTitle</td>
+                <td>@job.ApplicationDeadline?.ToString("dd/MM/yyyy")</td>
+                <td><span class="@badgeClass">@statusText</span></td>
+                <td>@job.Employer?.CompanyName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    .badge.bg-orange {
+        background-color: orange;
+        color: white;
+    }
+</style>

@@ -1,0 +1,125 @@
+﻿@model web_jobs.Models.Employer
+@{
+    ViewData["Title"] = "Đăng ký nhà tuyển dụng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link rel="stylesheet" href="~/css/job.css" asp-append-version="true" />
+}
+<style>
+    .register-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: stretch;
+        min-height: 80vh;
+        padding: 40px 20px;
+        animation: fadeIn 1s ease;
+    }
+
+    .register-left {
+        flex: 1;
+        min-width: 300px;
+        background: linear-gradient(to bottom right, #007bff, #00c6ff);
+        color: white;
+        padding: 40px;
+        border-radius: 12px 0 0 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+        .register-left h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .register-left p {
+            font-size: 18px;
+        }
+
+        .register-left img {
+            max-width: 200px;
+            margin: 0 auto 20px;
+        }
+
+    .register-right {
+        flex: 1.5;
+        min-width: 300px;
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 0 12px 12px 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .register-left, .register-right {
+        border-radius: 12px;
+    }
+</style>
+
+<div class="register-wrapper">
+    <!-- Bên trái: ảnh + slogan -->
+    <div class="register-left">
+ 
+        <h2>“Hợp tác cùng phát triển – Thu hút nhân tài!”</h2>
+        <p>Đăng ký công ty để kết nối với ứng viên phù hợp.</p>
+    </div>
+
+    <!-- Bên phải: form đăng ký nhà tuyển dụng -->
+    <div class="register-right">
+        <h3 class="mb-4">Thông tin đăng ký công ty</h3>
+
+        <form asp-action="Add" asp-controller="Employer" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="CompanyName">Tên công ty</label>
+                <input asp-for="CompanyName" class="form-control" />
+                <span asp-validation-for="CompanyName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CompanyEmail">Email công ty</label>
+                <input asp-for="CompanyEmail" class="form-control" />
+                <span asp-validation-for="CompanyEmail" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CompanySize">Quy mô công ty</label>
+                <input asp-for="CompanySize" class="form-control" />
+                <span asp-validation-for="CompanySize" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CompanyDescription">Mô tả công ty</label>
+                <textarea asp-for="CompanyDescription" class="form-control"></textarea>
+                <span asp-validation-for="CompanyDescription" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Logo công ty</label>
+                <input type="file" name="logoFile" class="form-control" accept=".jpg,.jpeg,.png" />
+                <span class="text-danger">@ViewData.ModelState["LogoFile"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+                <small class="text-muted">Ảnh PNG, JPG, JPEG</small>
+            </div>
+
+            <div class="form-group">
+                <label>Giấy phép kinh doanh</label>
+                <input type="file" name="licenseFile" class="form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                <span class="text-danger">@ViewData.ModelState["LicenseFile"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+                <small class="text-muted">Tệp PDF hoặc hình ảnh</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-2">Lưu thông tin</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

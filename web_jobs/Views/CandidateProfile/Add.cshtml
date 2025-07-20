@@ -1,0 +1,174 @@
+﻿@model web_jobs.Models.CandidateProfile
+@{
+    ViewData["Title"] = "Tạo hồ sơ ứng viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .mb-4 {
+        margin-bottom: 1.5rem !important;
+        text-align: center;
+        padding-bottom: 20px;
+        font-size: 39px;
+        font-weight
+    }
+
+    .applicant-wrapper {
+        display: flex;
+        justify-content: center;
+        padding: 30px 15px;
+        background-color: #f9f9f9;
+    }
+
+    .applicant-right {
+        width: 70%;
+        max-width: 800px;
+        background-color: #ffffff;
+        padding: 30px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+        .applicant-right h2 {
+            font-size: 28px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+   
+
+</style>
+
+<div class="applicant-wrapper">
+    <!-- Bên phải: form -->
+    <div class="applicant-right">
+        <h2 class="mb-4">Tạo hồ sơ ứng viên</h2>
+        <form asp-action="Add" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label asp-for="UserName">Tên ứng viên</label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserEmail">Email ứng viên </label>
+                <input asp-for="UserEmail" class="form-control" />
+                <span asp-validation-for="UserEmail" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserPhone">Số điện thoại </label>
+                <input asp-for="UserPhone" class="form-control" />
+                <span asp-validation-for="UserPhone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserAddress">Địa chỉ</label>
+                <input asp-for="UserAddress" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserBirthDate">Ngày sinh</label>
+                <input asp-for="UserBirthDate" type="date" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserFacebook">Facebook</label>
+                <input asp-for="UserFacebook" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CareerObjective">Mục tiêu nghề nghiệp</label>
+                <textarea asp-for="CareerObjective" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Education">Học vấn</label>
+                <input asp-for="Education" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EducationYear">Năm tốt nghiệp</label>
+                <input asp-for="EducationYear" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Experience">Kinh nghiệm</label>
+                <input asp-for="Experience" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ExperienceYear">Số năm kinh nghiệm</label>
+                <input asp-for="ExperienceYear" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DesiredSalary">Mức lương mong muốn</label>
+                <input asp-for="DesiredSalary" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserDesiredJob">Vị trí mong muốn</label>
+                <input asp-for="UserDesiredJob" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CertificateName">Tên chứng chỉ</label>
+                <input asp-for="CertificateName" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CertificateYear">Năm cấp chứng chỉ</label>
+                <input asp-for="CertificateYear" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PrizeDesc">Giải thưởng</label>
+                <input asp-for="PrizeDesc" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PrizeYear">Năm trao giải</label>
+                <input asp-for="PrizeYear" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Language">Ngôn ngữ</label>
+                <input asp-for="Language" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SoftSkill">Kỹ năng mềm</label>
+                <input asp-for="SoftSkill" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Interest">Sở thích</label>
+                <input asp-for="Interest" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserPosition">Vị trí hiện tại</label>
+                <input asp-for="UserPosition" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Ảnh ứng viên</label>
+                <input type="file" name="avatarFile" class="form-control" accept=".jpg,.jpeg,.png" />
+                <span class="text-danger">@ViewData.ModelState["avatarFile"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+                <small class="text-muted">Ảnh PNG, JPG, JPEG</small>
+            </div>
+
+            <button type="submit" class="btn btn-success">Lưu hồ sơ</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

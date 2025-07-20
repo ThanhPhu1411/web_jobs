@@ -1,0 +1,77 @@
+﻿@model web_jobs.ViewModels.HomeViewModel
+
+@{
+    ViewData["Title"] = "Tất cả công việc";
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+}
+<h2>Tất cả ngành</h2>
+<div class="container-categories">
+    <div class="categories-grid">
+        <ul>
+            @foreach (var category in Model.Categories)
+            {
+                <li>
+                    <a asp-controller="JobPublic" asp-action="AllJobs" asp-route-categoryID="@category.Id"
+                       class="@(Model.SelectedCategoryId==category.Id?"active":"")">@category.Name</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<h2>Tất cả công việc</h2>
+
+<div class="jobs-grid">
+    @foreach (var job in Model.Jobs)
+    {
+        <div class="job-card">
+            <div class="job-card-left">
+                <div class="company-logo">
+                    @if (!string.IsNullOrEmpty(job.Employer?.CompanyLogo))
+                    {
+                        <img src="~/images/@job.Employer.CompanyLogo" alt="Logo" width="80" />
+                    }
+                    else
+                    {
+                        <img src="~/images/default-logo.png" alt="Default Logo" width="80" />
+                    }
+                </div>
+
+                <div class="job-info">
+                    <h4>@job.JobTitle</h4>
+                    <p>@job.JobDescription</p>
+
+                    <div class="job-details">
+                        <p><i class="fas fa-map-marker-alt"></i> @job.Locate</p>
+                        <p><i class="fas fa-dollar-sign"></i> @job.Salary</p>
+                    </div>
+
+                    <span class="job-type">@job.JobType?.JobType_Name</span>
+                </div>
+            </div>
+
+            <div class="job-card-right">
+                <a asp-controller="JobPublic" asp-action="Detail" asp-route-id="@job.ID" class="btn-apply">Ứng tuyển ngay </a>
+                <form asp-action="SaveJob" asp-controller="JobPublic" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="jobId" value="@job.ID" />
+                    <button type="submit" class="btn-save">Lưu công việc</button>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+@* <div class="pagination">
+    @if (Model.TotalPages > 1)
+    {
+        for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <a asp-controller="JobPublic" asp-action="AllJobs"
+               asp-route-categoryId="@(Model.SelectedCategoryId)"
+               asp-route-page="@i"
+               class="@(i == Model.CurrentPage ? "active" : "")">
+                @i
+            </a>
+        }
+    }
+</div> *@

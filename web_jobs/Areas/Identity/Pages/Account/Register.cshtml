@@ -1,0 +1,120 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+
+<style>
+    body {
+        background: url('/images/hutech-bg.jpg') no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    form#registerForm {
+        max-width: 440px;
+        margin: 80px auto;
+        background-color: rgba(255, 255, 255, 0.97);
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+    }
+
+    h2, h4, h5 {
+        text-align: center;
+        font-weight: bold;
+        color: #003366;
+    }
+
+    label {
+        font-weight: 500;
+    }
+
+    .form-check-label {
+        font-weight: 500;
+        color: #333;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .form-check-input:checked {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .text-muted {
+        font-size: 0.95rem;
+    }
+
+    .text-danger {
+        font-size: 0.85rem;
+    }
+
+    .role-section {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 10px 15px;
+        margin-bottom: 1.5rem;
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <div class="text-center mb-3">
+            <img src="~/images/job3.jpg" alt="Logo HUTECH" style="height: 60px;" />
+            <h4 class="mt-2">Tìm việc làm</h4>
+            <p class="text-muted">Cổng thông tin đăng ký tài khoản</p>
+        </div>
+
+        <h5 class="mb-3">@ViewData["Title"]</h5>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+        <div class="role-section">
+            <label class="mb-2">Bạn là:</label><br />
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="Input.Role" id="roleEmployer" value="Employer" />
+                <label class="form-check-label" for="roleEmployer">🏢 Nhà tuyển dụng</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="Input.Role" id="roleCandidate" value="Candidate" checked />
+                <label class="form-check-label" for="roleCandidate">🧑‍💼 Ứng viên</label>
+            </div>
+            <span asp-validation-for="Input.Role" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="name@example.com" />
+            <label asp-for="Input.Email">Email</label>
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Input.Password" class="form-control" type="password" autocomplete="new-password" placeholder="Mật khẩu" />
+            <label asp-for="Input.Password">Mật khẩu</label>
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Input.ConfirmPassword" class="form-control" type="password" autocomplete="new-password" placeholder="Xác nhận mật khẩu" />
+            <label asp-for="Input.ConfirmPassword">Xác nhận mật khẩu</label>
+            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+        </div>
+
+        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">🚀 Đăng ký ngay</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

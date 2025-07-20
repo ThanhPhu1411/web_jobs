@@ -1,0 +1,35 @@
+﻿@model web_jobs.Models.Employer
+
+<h2>Trạng thái công ty của bạn</h2>
+
+<p><strong>Tên công ty:</strong> @Model.CompanyName</p>
+<p><strong>Email công ty:</strong> @Model.CompanyEmail</p>
+
+<p>
+    <strong>Trạng thái duyệt:</strong>
+    @if (string.IsNullOrEmpty(Model.Status))
+    {
+        <span>Chưa có trạng thái</span>
+    }
+    else if (Model.Status.ToLower() == "approved")
+    {
+        <span style="color: green;">Đã được duyệt ✔️</span>
+    }
+    else if (Model.Status.ToLower() == "pending")
+    {
+        <span style="color: orange;">Đang chờ duyệt ⏳</span>
+    }
+    else if (Model.Status.ToLower() == "rejected")
+    {
+        <span style="color: red;">Bị từ chối ❌</span>
+    }
+    else
+    {
+        <span>@Model.Status</span>
+    }
+</p>
+
+@if (Model.Status?.ToLower() != "approved")
+{
+    <p><em>Bạn chưa được duyệt. Vui lòng chờ admin duyệt hoặc cập nhật lại thông tin công ty.</em></p>
+}

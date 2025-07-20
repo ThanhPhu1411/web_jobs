@@ -1,0 +1,135 @@
+﻿@using System.Collections;
+@model IEnumerable<web_jobs.Models.Category>
+
+@{
+	ViewData["Title"] = "Danh sách khoa";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .header-title{
+		text-align: center;
+    }
+
+    body {
+        background-color: #fff;
+        color: #333;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .page-container {
+        padding: 40px 20px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .header-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 30px;
+    }
+
+    .add-button-container {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .btn-add {
+        background-color: #7c4dff;
+        color: #fff;
+        font-size: 1rem;
+        padding: 10px 20px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .btn-add:hover {
+            background-color: #5e35b1;
+            transform: scale(1.05);
+        }
+
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .category-card {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+        .category-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+    .category-name {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #3f51b5;
+    }
+
+    .category-actions {
+        display: flex;
+        justify-content: space-around;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        border: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        text-decoration: none;
+        color: #fff;
+        transition: 0.3s ease;
+    }
+    .btn-cat-update {
+        background-color: #FF8F00;
+    }
+
+        .btn-cat-update:hover {
+            background-color: #e67e00;
+        }
+
+    .btn-cat-delete {
+        background-color: #C62828;
+    }
+
+        .btn-cat-delete:hover {
+            background-color: #a91f1f;
+        }
+
+ 
+</style>
+
+<div class="page-container">
+    <h1 class="header-title">💼 Danh sách ngành  </h1>
+
+    <div class="add-button-container">
+        <a asp-action="Add" class="btn-add">+ Thêm ngành mới</a>
+    </div>
+
+    <div class="category-grid">
+        @foreach (var category in Model)
+        {
+            <div class="category-card">
+                <div class="category-name">@category.Name</div>
+                <div class="category-actions">
+                    <a asp-action="Update" asp-route-id="@category.Id" class="action-btn btn-cat-update"><i class="bi bi-pencil-square"></i></a>
+                    <a asp-action="Delete" asp-route-id="@category.Id" class="action-btn btn-cat-delete"><i class="bi bi-trash"></i></a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

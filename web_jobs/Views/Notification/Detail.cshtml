@@ -1,0 +1,16 @@
+﻿@model web_jobs.Models.Notification
+@{
+	ViewData["Title"] = "Chi tiết thông báo";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-notification">
+	<div class="container-header">
+		<h1>Chi tiết thông báo</h1>
+	</div>
+	<div class="notification-detail">
+		<h3>@Model.Title</h3>
+		<p><strong>Nội dung:</strong> @Model.Message</p>
+		<p><strong>Ngày gửi:</strong> @Model.SentDate.ToString("dd/MM/yyyy HH:mm")</p>
+		<p><strong>Trạng thái:</strong> <span class="@(Model.IsRead ? "badge bg-success" : "badge bg-warning")">@(Model.IsRead ? "Đã đọc" : "Chưa đọc")</span></p>
+	</div>
+</div>

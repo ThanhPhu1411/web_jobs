@@ -1,0 +1,84 @@
+﻿@model web_jobs.Models.Category
+@{
+    ViewData["Title"] = "Xóa ngành nghề";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .container {
+        max-width: 600px;
+        padding: 40px;
+    }
+
+
+    .form-container {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #555;
+    }
+
+    .form-control {
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+
+    .btn-submit {
+        background-color: #dc3545;
+        color: white;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: none;
+        margin-right: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-submit:hover {
+            background-color: #c82333;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        height: 44px;
+        margin-top: -5px;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .text-danger {
+        font-size: 0.875rem;
+    }
+</style>
+<div class="container mt-5">
+    <div class="container-header">
+        <h2>Xóa ngành nghề  </h2>
+    </div>
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+    <div class="form-container">
+        <p>Bạn có chắc muốn xóa ngành nghề này <strong>@Model.Name</strong></p>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn-submit btn-danger">Xóa</button>
+            <a href="@Url.Action("Index", "Category")" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+﻿@model IEnumerable<web_jobs.Models.Application>
+
+    <style>
+
+    h2 {
+        font-size: calc(1.325rem + .9vw);
+        text-align: center;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        background-color: #000;
+        color: #fff;
+        margin-bottom: 20px;
+    }
+
+    .clickable-row {
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+        .clickable-row:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+<h2>Danh sách ứng viên ứng tuyển</h2>
+<div class="mb-3">
+    <a asp-action="ViewApplications" asp-route-filter="approved" class="btn @(ViewBag.Filter == "approved" ? "btn-success" : "btn-outline-success")">
+        🟢 Đã duyệt (@ViewBag.ApprovedCount)
+    </a>
+    <a asp-action="ViewApplications" asp-route-filter="pending" class="btn @(ViewBag.Filter == "pending" ? "btn-warning" : "btn-outline-warning")">
+        🟡 Đang chờ (@ViewBag.PendingCount)
+    </a>
+    <a asp-action="ViewApplications" asp-route-filter="rejected" class="btn @(ViewBag.Filter == "rejected" ? "btn-danger" : "btn-outline-danger")">
+        🔴 Bị từ chối (@ViewBag.RejectedCount)
+    </a>
+    <a asp-action="ViewApplications" class="btn @(string.IsNullOrEmpty(ViewBag.Filter) ? "btn-primary" : "btn-outline-primary")">
+        📋 Tất cả (@(ViewBag.ApprovedCount + ViewBag.PendingCount + ViewBag.RejectedCount))
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <p>Chưa có ai ứng tuyển vào các tin tuyển dụng của bạn.</p>
+}
+
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Công việc</th>
+                <th>Ứng viên</th>
+                <th>Ngày ứng tuyển</th>
+                <th>Trạng thái</th>
+                <th>Ghi chú</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var app in Model)
+            {
+                var statusText = "";
+                var badgeClass = "";
+
+                switch (app.Status?.ToLower())
+                {
+                    case "approved":
+                        statusText = "🟢 Đã duyệt";
+                        badgeClass = "badge bg-success";
+                        break;
+                    case "pending":
+                        statusText = "🟡 Đang chờ";
+                        badgeClass = "badge bg-warning";
+                        break;
+                    case "rejected":
+                        statusText = "🔴 Bị từ chối";
+                        badgeClass = "badge bg-danger";
+                        break;
+                    default:
+                        statusText = "❔ Không xác định";
+                        badgeClass = "badge bg-secondary";
+                        break;
+                }
+                <tr class="clickable-row"
+                    onclick="location.href='@Url.Action("CandidateProfileDetail", "Employer", new { id = app.CandidateProfile.ID, jobId = app.Job_ID })'">
+                    <td>@app.Job?.JobTitle</td>
+                    <td>@app.CandidateProfile?.UserName</td>
+                    <td>@app.ApplyDate.ToString("dd/MM/yyyy")</td>
+                    <td><span class="@badgeClass">@statusText</span></td>
+                    <td>@app.Note</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

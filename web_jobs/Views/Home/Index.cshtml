@@ -1,0 +1,167 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm việc làm </title>
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
+</head>
+
+<body>
+    <div class="header">
+    </div>
+    <main>
+        <div class="container-home">
+
+
+
+            <div class="job-categories">
+                <h3>
+                    TOP CÔNG CÁC NGÀNH HOT
+                </h3>
+                <ul>
+                    <li>
+                        <a href="https://vi.wikipedia.org/wiki/C%C3%B4ng_ngh%E1%BB%87_th%C3%B4ng_tin">
+                            Công nghệ thông
+                            tin
+                        </a>
+                    </li>
+                    <li><a href="https://skillking.fpt.edu.vn/tin-tuc/marketing-la-gi/">Marketing</a></li>
+                    <li>
+                        <a href="https://vi.wikipedia.org/wiki/Ng%C3%A0nh_ngh%E1%BB%81_kinh_doanh#:~:text=Ng%C3%A0nh%20ngh%E1%BB%81%20kinh%20doanh%20(Line,c%E1%BA%A7u%20kinh%20doanh%2C%20th%C6%B0%C6%A1ng%20m%E1%BA%A1i.)">
+                            Kinh
+                            doanh
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://vi.wikipedia.org/wiki/Thi%E1%BA%BFt_k%E1%BA%BF_%C4%91%E1%BB%93_h%E1%BB%8Da">
+                            Thiết
+                            kế đồ họa
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://vi.wikipedia.org/wiki/Qu%E1%BA%A3n_tr%E1%BB%8B_nh%C3%A2n_s%E1%BB%B1">
+                            Quản trị
+                            nhân sự
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="search-job">
+                <div class="gallery">
+                    <span style="--i:0"><img src="/images/image.png" alt="1"></span>
+                    <span style="--i:1"><img src="/images/2.png" alt="2"></span>
+                    <span style="--i:2"><img src="/images/7.jpg" alt="3"></span>
+                    <span style="--i:3"><img src="/images/4.jpg" alt="4"></span>
+                    <span style="--i:4"><img src="/images/8.jpg" alt="5"></span>
+                    <span style="--i:5"><img src="/images/20.jpg" alt="6"></span>
+                    <span style="--i:6"><img src="/images/image copy.png" alt="7"></span>
+                    <span style="--i:7"><img src="/images/6.jpg" alt="8"></span>
+                    <span style="--i:8"><img src="/images/9.jpg" alt="9"></span>
+                    <span style="--i:9"><img src="/images/16.jpg" alt="10"></span>
+
+                </div>
+            </div>
+        </div>
+     
+            <!-- Categories -->
+            <div class="container-categories">
+                <div class="section-header">
+                    <h3>
+						CÁC NGÀNH NGHỀ PHỔ BIẾN
+                    </h3>
+                         <a asp-controller="JobPublic" asp-action="AllJobs" class="btn btn-primary" style="font-size: 14px; padding: 6px 12px; margin-bottom:20px;">
+                          Xem tất cả
+                          </a>
+                </div>
+                <div class="categories-grid">
+                <ul>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <li>
+                            <a asp-controller="Home" asp-action="Index" asp-route-categoryID="@category.Id"
+                               class="@(Model.SelectedCategoryId==category.Id?"active":"")">@category.Name</a>
+                        </li>
+                    }
+                </ul>
+                </div>
+            </div>
+        <!-- Jobs -->
+        <div class="container-jobs">
+            <!-- Chỉ bao phần tiêu đề -->
+            <div class="section-header">
+                <h3>Các công việc đặc trưng</h3>
+                <a asp-controller="JobPublic" asp-action="AllJobs" class="btn btn-primary" style="font-size: 14px; padding: 6px 12px; margin-bottom:20px;">
+                    Xem tất cả
+                </a>
+            </div>
+
+            <!-- Grid hiển thị danh sách job -->
+            <div class="jobs-grid">
+                @foreach (var job in Model.Jobs)
+                {
+					// Kiểm tra xem công việc đã hết hạn hay chưa
+					var isExpired = job.ApplicationDeadline < DateTime.Now;
+                    //Nếu đã hết hạn → dùng class "job-card expired" để có thể style khác đi (ví dụ: mờ màu, không cho click, hiển thị dòng chữ “hết hạn”).
+                   // Nếu chưa hết hạn → dùng class "job-card" bình thường.
+                    var cardClass = isExpired ? "job-card expired" : "job-card";
+                    var detailUrl = Url.Action("Detail", "JobPublic", new { id = job.ID });
+                    <div class="@cardClass" @(isExpired ? "" : $"onclick=\"location.href='{detailUrl}'\"") style="cursor: @(isExpired ? "not-allowed" : "pointer");">
+                        <div class="job-card-left">
+                            <div class="company-logo">
+                                @if (!string.IsNullOrEmpty(job.Employer?.CompanyLogo))
+                                {
+                                    <img src="~/images/@job.Employer.CompanyLogo" alt="Logo" width="80" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/default-logo.png" alt="Default Logo" width="80" />
+                                }
+                            </div>
+
+                            <div class="job-info">
+                                <span class="badge"></span>
+                                <h4>@job.JobTitle</h4>
+                                <p>@job.JobDescription</p>
+
+                                <div class="job-details">
+                                    <p><i class="fas fa-map-marker-alt"></i> @job.Locate</p>
+                                    <p><i class="fas fa-dollar-sign"></i> @job.Salary</p>
+                                </div>
+
+                                <span class="job-type">@job.JobType?.JobType_Name</span>
+
+                                @if (isExpired)
+                                {
+                                    <p style="color: red; font-weight: bold; margin-top: 10px;">Công việc này đã hết hạn</p>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="job-card-right">
+                            <a asp-controller="JobPublic" asp-action="Detail" asp-route-id="@job.ID" class="btn-apply" onclick="event.stopPropagation(); @(isExpired ? "return false;" : "")">Ứng tuyển ngay</a>
+
+                            <form asp-action="SaveJob" asp-controller="JobPublic" method="post" onclick="event.stopPropagation();">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="jobId" value="@job.ID" />
+                                <button type="submit" class="btn-save" @(isExpired ? "disabled" : "")>Lưu công việc</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+
+                @if (TempData["Message"] != null)
+                {
+                    <div class="alert alert-info">@TempData["Message"]</div>
+                }
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>

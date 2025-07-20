@@ -1,0 +1,44 @@
+﻿@model IEnumerable<web_jobs.Models.Notification>
+@{
+	ViewData["Title"] = "Thông báo của tôi";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-notification">
+	<div class="container-header">
+		<h2>Thông báo của tôi 🔔</h2>
+	</div>
+	<nav>
+		<a asp-action="Unread" class="btn btn-primary">Chưa đọc (@Model.Count(n => !n.IsRead))</a>
+		<a asp-action="Read" class="btn btn-secondary">Đã đọc (@Model.Count(n => n.IsRead))</a>
+	</nav>
+	@if(!Model.Any())
+	{
+		<p>Bạn chưa có thông báo nào </p>
+	}
+	else
+	{
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Tiêu đề</th>
+					<th>Nội dung</th>
+					<th>Ngày gửi</th>
+					<th>Trạng thái</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var notification in Model)
+				{
+					var statusText = notification.IsRead ? "Đã đọc" : "Chưa đọc";
+					var badgeClass = notification.IsRead ? "badge bg-success" : "badge bg-warning";
+					<tr>
+						<td> <a asp-action="Detail" asp-route-id="@notification.ID">@notification.Title</a></td>
+						<td>@notification.Message</td>
+						<td>@notification.SentDate.ToString("dd/MM/yyyy HH:mm")</td>
+						<td><span class="@badgeClass">@statusText</span></td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	}
+</div>

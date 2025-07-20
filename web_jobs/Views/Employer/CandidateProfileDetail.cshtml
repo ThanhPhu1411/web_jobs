@@ -1,0 +1,176 @@
+﻿@model web_jobs.Models.CandidateProfile
+@{
+    ViewData["Title"] = "Hồ sơ ứng viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .cv-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+        min-height: 900px;
+    }
+
+    .cv-left {
+        width: 35%;
+        background: #1d1d1d;
+        color: #fff;
+        padding: 30px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+        .cv-left img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 2px solid #fff;
+        }
+
+        .cv-left h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .cv-left p.title {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #ffa726;
+            text-align: center;
+        }
+
+        .cv-left .contact, .cv-left .skills {
+            margin-top: 30px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .cv-left .section-title {
+            font-weight: bold;
+            border-bottom: 1px solid #fff;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            color: #ffa726;
+        }
+
+        .cv-left ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .cv-left li {
+            margin-bottom: 8px;
+        }
+
+    .cv-right {
+        width: 65%;
+        padding: 30px;
+    }
+
+        .cv-right h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .cv-right p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+    .container-header h1 {
+     
+        text-align: center;
+        margin-bottom: 22px;
+        background-color: #000;
+        color: #fff;
+    }
+
+    
+</style>
+<div class="container-profile">
+<div class="container-header">
+    <h1>Hồ sơ ứng viên</h1>
+</div>
+    <div class="cv-container">
+        <div class="cv-left">
+            @if (!string.IsNullOrEmpty(Model.UserAvatar))
+            {
+                <img src="~/images/@Model.UserAvatar" alt="Avatar" />
+            }
+            <h2>@Model.UserName</h2>
+
+            <p class="title">@Model.UserPosition</p>
+            <div class="contact">
+                <p class="section-title">Liên hệ</p>
+                <ul>
+                    <li><strong>📞</strong> @Model.UserPhone</li>
+                    <li><strong>📧</strong> @Model.UserEmail</li>
+                    <li><strong>📍</strong> @Model.UserAddress</li>
+                    <li><strong>🔗</strong> @Model.UserFacebook</li>
+                </ul>
+            </div>
+            <div class="skills">
+                <p class="section-title">Kỹ năng</p>
+                <ul>
+                    <li><strong>Ngoại ngữ:</strong> @Model.Language</li>
+                    <li><strong>Kỹ năng mềm:</strong> @Model.SoftSkill</li>
+                </ul>
+                <p class="section-title">Sở thích</p>
+                <p>@Model.Interest</p>
+            </div>
+        </div>
+        <div class="cv-right">
+            <h3>Mục tiêu nghề nghiệp</h3>
+            <p>@Model.CareerObjective</p>
+
+            <h3>Học vấn</h3>
+            <p>@Model.EducationYear - @Model.Education</p>
+
+            <h3>Kinh nghiệm làm việc</h3>
+            <p>@Model.ExperienceYear - @Model.Experience</p>
+
+            <h3>Chứng chỉ</h3>
+            <p>@Model.CertificateYear - @Model.CertificateName</p>
+
+            <h3>Giải thưởng</h3>
+            <p>@Model.PrizeYear - @Model.PrizeDesc</p>
+
+            <h3>Thông tin khác</h3>
+            <p><strong>Ngày sinh:</strong> @Model.UserBirthDate?.ToString("dd/MM/yyyy")</p>
+        </div>
+    </div>
+
+<div class="text-center mt-4">
+		@if (ViewBag.JobId != null && Model != null)
+        {
+            <form asp-action="ApproveApplication" asp-controller="Employer" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="jobId" value="@ViewBag.JobId" />
+                <input type="hidden" name="userId" value="@Model.UserID" />
+                <button type="submit" class="btn btn-success">✔ Duyệt hồ sơ</button>
+            </form>
+            <form asp-action="RejectApplication" asp-controller="Employer" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="jobId" value="@ViewBag.JobId" />
+                <input type="hidden" name="userId" value="@Model.UserID" />
+                <button type="submit" class="btn btn-danger">✖ Từ chối hồ sơ</button>
+            </form>
+        } 
+		
+    <a asp-action="ViewApplications" class="btn btn-primary">← Quay lại danh sách ứng viên</a>
+</div>
+</div>
+

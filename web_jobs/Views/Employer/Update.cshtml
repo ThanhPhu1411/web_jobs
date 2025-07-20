@@ -1,0 +1,73 @@
+﻿@model web_jobs.Models.Employer
+@{
+    ViewData["Title"] = "Chỉnh sửa thông tin công ty";
+}
+
+<h2 class="text-primary">Chỉnh sửa thông tin công ty</h2>
+
+<form asp-action="Update" asp-controller="Employer" enctype="multipart/form-data" method="post">
+    <input type="hidden" asp-for="ID" />
+
+    <div class="form-group">
+        <label asp-for="CompanyName"></label>
+        <input asp-for="CompanyName" class="form-control" />
+        <span asp-validation-for="CompanyName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CompanyEmail"></label>
+        <input asp-for="CompanyEmail" class="form-control" />
+        <span asp-validation-for="CompanyEmail" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CompanySize"></label>
+        <input asp-for="CompanySize" class="form-control" />
+        <span asp-validation-for="CompanySize" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CompanyDescription"></label>
+        <textarea asp-for="CompanyDescription" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="CompanyDescription" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Logo hiện tại:</label><br />
+        @if (!string.IsNullOrEmpty(Model.CompanyLogo))
+        {
+            <img src="~/images/@Model.CompanyLogo" alt="Logo" width="120" class="mb-2" />
+        }
+        else
+        {
+            <p class="text-muted">Chưa có logo</p>
+        }
+        <br />
+        <label>Thay logo mới:</label>
+        <input type="file" name="logoFile" class="form-control-file" />
+    </div>
+
+    <div class="form-group">
+        <label>Giấy phép hiện tại:</label><br />
+        @if (!string.IsNullOrEmpty(Model.LicenseDocument))
+        {
+            <a href="~/licenses/@Model.LicenseDocument" target="_blank">Xem giấy phép</a>
+        }
+        else
+        {
+            <p class="text-muted">Chưa có giấy phép</p>
+        }
+        <br />
+        <label>Thay giấy phép mới:</label>
+        <input type="file" name="licenseFile" class="form-control-file" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cập nhật</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

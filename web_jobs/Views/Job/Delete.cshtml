@@ -1,0 +1,40 @@
+﻿@model web_jobs.Models.Job
+
+@{
+    ViewData["Title"] = "Xoá tin tuyển dụng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-danger mb-4">Xác nhận xoá tin tuyển dụng</h2>
+
+    <div class="alert alert-warning">
+        <strong>Bạn có chắc chắn muốn xoá tin tuyển dụng sau không?</strong>
+    </div>
+
+    <dl class="row">
+        <dt class="col-sm-3">Tiêu đề</dt>
+        <dd class="col-sm-9">@Model.JobTitle</dd>
+
+        <dt class="col-sm-3">Mô tả</dt>
+        <dd class="col-sm-9">@Model.JobDescription</dd>
+
+        <dt class="col-sm-3">Lương</dt>
+        <dd class="col-sm-9">@Model.Salary</dd>
+
+        <dt class="col-sm-3">Địa điểm</dt>
+        <dd class="col-sm-9">@Model.Locate</dd>
+
+        <dt class="col-sm-3">Hạn chót</dt>
+        <dd class="col-sm-9">@Model.ApplicationDeadline?.ToString("dd/MM/yyyy")</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="ID" />
+        <button type="submit" class="btn btn-danger">Xác nhận xoá</button>
+        <a asp-action="Index" class="btn btn-secondary">Huỷ bỏ</a>
+        <a asp-action="Update" asp-route-id="@Model.ID" class="btn btn-secondary">Chỉnh sửa</a>
+
+    </form>
+</div>

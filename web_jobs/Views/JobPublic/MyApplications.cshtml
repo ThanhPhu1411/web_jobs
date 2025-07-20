@@ -1,0 +1,57 @@
+﻿@model IEnumerable<web_jobs.Models.Application>
+
+<h2 class="page-title">📄 Trạng Thái Hồ Sơ Ứng Tuyển</h2>
+<p class="page-subtitle">Theo dõi tiến trình nộp hồ sơ của bạn tại các công ty</p>
+@if (!Model.Any())
+{
+    <p>Bạn chưa có ứng tuyển nào.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Công việc</th>
+                <th>Ngày ứng tuyển</th>
+                <th>Trạng thái </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var app in Model)
+            {
+                var statusText = "";
+                var badgeClass = "";
+
+                switch (app.Status?.ToLower())
+                {
+                    case "approved":
+                        statusText = "🟢 Đã duyệt";
+                        badgeClass = "badge bg-success";
+                        break;
+                    case "pending":
+                        statusText = "🟡 Đang chờ";
+                        badgeClass = "badge bg-warning";
+                        break;
+                    case "rejected":
+                        statusText = "🔴 Bị từ chối";
+                        badgeClass = "badge bg-danger";
+                        break;
+                    default:
+                        statusText = "❔ Không xác định";
+                        badgeClass = "badge bg-secondary";
+                        break;
+                }
+
+                <tr>
+                    <td>
+                        <a asp-action="Detail" asp-route-id="@app.Job_ID">@app.Job?.JobTitle</a>
+                    </td>
+                    <td>@app.ApplyDate.ToString("dd/MM/yyyy")</td>
+                    <td><span class="@badgeClass">@statusText</span></td>
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+}

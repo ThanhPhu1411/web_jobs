@@ -1,0 +1,58 @@
+﻿@model web_jobs.Models.Employer
+@{
+    ViewData["Title"] = "Xoá công ty";
+}
+
+<h2 class="text-danger">Xác nhận xoá công ty</h2>
+
+<div class="alert alert-warning mt-4">
+    <p>Bạn có chắc chắn muốn xoá công ty dưới đây không?</p>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Tên công ty</dt>
+            <dd class="col-sm-9">@Model.CompanyName</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.CompanyEmail</dd>
+
+            <dt class="col-sm-3">Quy mô</dt>
+            <dd class="col-sm-9">@Model.CompanySize</dd>
+
+            <dt class="col-sm-3">Mô tả</dt>
+            <dd class="col-sm-9">@Html.Raw(Model.CompanyDescription)</dd>
+
+            <dt class="col-sm-3">Logo</dt>
+            <dd class="col-sm-9">
+                @if (!string.IsNullOrEmpty(Model.CompanyLogo))
+                {
+                    <img src="~/images/@Model.CompanyLogo" alt="Logo" width="120" />
+                }
+                else
+                {
+                    <span>Chưa cập nhật</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Giấy phép</dt>
+            <dd class="col-sm-9">
+                @if (!string.IsNullOrEmpty(Model.LicenseDocument))
+                {
+                    <a href="~/licenses/@Model.LicenseDocument" target="_blank">Xem giấy phép</a>
+                }
+                else
+                {
+                    <span>Chưa cập nhật</span>
+                }
+            </dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="ID" />
+            <button type="submit" class="btn btn-danger">Xác nhận xoá</button>
+            <a asp-action="Index" class="btn btn-secondary">Huỷ bỏ</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,152 @@
+﻿@model web_jobs.Models.Job
+@{
+    ViewData["Title"] = "Cập nhật việc làm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link rel="stylesheet" href="~/css/job.css" asp-append-version="true" />
+}
+<style>
+    /* Giữ nguyên phần CSS như bạn đã có */
+    .register-wrapper {
+        display: flex;
+        min-height: 80vh;
+        padding: 40px 20px;
+        animation: fadeIn 1s ease;
+    }
+
+    .register-left {
+        flex: 1;
+        min-width: 300px;
+        position: relative;
+        border-radius: 12px 0 0 12px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .register-left img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .register-left .overlay {
+            position: relative;
+            z-index: 2;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            max-width: 90%;
+        }
+
+            .register-left .overlay h2 {
+                font-size: 32px;
+                margin-bottom: 15px;
+                font-weight: 600;
+                line-height: 1.2;
+            }
+
+            .register-left .overlay p {
+                font-size: 18px;
+                margin: 0;
+            }
+
+    .register-right {
+        flex: 1.5;
+        min-width: 300px;
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 0 12px 12px 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .register-left, .register-right {
+        border-radius: 12px;
+    }
+</style>
+
+<div class="register-wrapper">
+    <div class="register-left">
+        <img src="~/images/job-right.jpg" alt="Job Icon" />
+        <div class="overlay">
+            <h2>“Kết nối tài năng – Đón đầu cơ hội!”</h2>
+            <p>Hãy để chúng tôi giúp bạn tìm kiếm nhân sự phù hợp nhất.</p>
+        </div>
+    </div>
+
+    <div class="register-right">
+        <h3 class="mb-4">Cập nhật thông tin việc làm</h3>
+
+        <form method="post" asp-action="Update" asp-route-id="@Model.ID">
+            <div class="form-group">
+                <label asp-for="JobTitle">Công việc</label>
+                <input asp-for="JobTitle" class="form-control" />
+                <span asp-validation-for="JobTitle" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="JobDescription">Miêu tả công việc</label>
+                <textarea asp-for="JobDescription" class="form-control"></textarea>
+                <span asp-validation-for="JobDescription" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Requirements">Yêu cầu công việc</label>
+                <textarea asp-for="Requirements" class="form-control"></textarea>
+                <span asp-validation-for="Requirements" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Salary">Lương</label>
+                <input asp-for="Salary" class="form-control" />
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Benefits">Lợi ích</label>
+                <input asp-for="Benefits" class="form-control" />
+                <span asp-validation-for="Benefits" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Locate">Địa điểm làm việc</label>
+                <input asp-for="Locate" class="form-control" />
+                <span asp-validation-for="Locate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ApplicationDeadline">Hạn chót nộp đơn</label>
+                <input asp-for="ApplicationDeadline" type="date" class="form-control" id="deadlineInput" />
+                <span asp-validation-for="ApplicationDeadline" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CategoryId">Chọn ngành</label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
+                    <option value="" disabled>-- Chọn ngành --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="JobTypeId">Chọn loại công việc</label>
+                <select asp-for="JobTypeId" class="form-control" asp-items="ViewBag.JobTypes">
+                    <option value="" disabled>-- Loại công việc --</option>
+                </select>
+            </div>
+
+            <input type="hidden" asp-for="Status" />
+            <input type="hidden" asp-for="EmployerID" />
+            <button type="submit" class="btn btn-primary">Lưu thông tin</button>
+            <a asp-action="Index" class="btn btn-secondary">Huỷ bỏ</a>
+        </form>
+    </div>
+</div>

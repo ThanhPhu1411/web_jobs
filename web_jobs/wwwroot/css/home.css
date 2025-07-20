@@ -1,0 +1,277 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.h2, h2 {
+    font-size: calc(1.325rem + .9vw);
+    padding-top: 28px;
+    text-align: center;
+    font-weight: 600;
+}
+
+body, main {
+    margin: 0;
+    padding: 0;
+}
+.container-home {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-right:0;
+    margin-left:0
+}
+
+.search-job {
+    width: 70%;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    /* Để hỗ trợ ảnh nền phụ */
+    background-image: url("../images/22.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+.job-categories {
+    width: 30%;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+    .job-categories:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    }
+
+.search-job input {
+    width: 80%;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-job button {
+    padding: 10px 20px;
+    background: #0073e6;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.job-categories ul {
+    list-style: none;
+    padding: 0;
+}
+
+    .job-categories ul li {
+        margin: 10px 0;
+        font-size: 18px;
+    }
+
+        .job-categories ul li a {
+            text-decoration: none;
+            color: #0073e6;
+            font-weight: bold;
+        }
+
+            .job-categories ul li a:hover {
+                text-decoration: underline;
+                color: #fb0808;
+            }
+
+/* Responsive design */
+
+.gallery {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    box-shadow: none;
+    position: relative;
+    width: 200px;
+    height: 100px;
+    border: 2px solid #fff;
+    transition: 0.4 ease-in-out;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    /* Giữ hiệu ứng 3D cho các phần tử con */
+    animation: rotate 35s linear infinite;
+    /* Quay 360 độ liên tục */
+}
+
+@keyframes rotate {
+    from {
+        transform: perspective(1200px) rotateY(0deg);
+        /* Bắt đầu với góc xoay 0 độ */
+    }
+
+    to {
+        transform: perspective(1200px) rotateY(360deg);
+        /* Quay hoàn toàn 360 độ theo trục Y */
+    }
+}
+
+.gallery span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-origin: center;
+    transform-style: preserve-3d;
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(380px);
+}
+.gallery img {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transform: 0.4s ease-in-out;
+    border-radius: 15px;
+    box-shadow: 5px 5px 15px rgba(1, 1, 1, 1);
+    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+}
+
+    .gallery img:hover {
+        transform: scale(130%);
+        /* Phóng to ảnh lên 130% khi hover */
+    }
+/*categories*/
+.container-categories {
+    padding: 40px 20px;
+}
+
+.section-header h3 {
+    background: linear-gradient(to right, #ffffff, #0c79ee);
+    height: 132px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.categories-grid ul {
+    list-style-type: none;
+    padding-left: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Chia thành 3 cột với làm khung rộng ra */
+    gap: 20px;
+}
+
+    .categories-grid ul li {
+        padding: 30px 20px;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+        transition: background-color 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100px;
+    }
+
+        .categories-grid ul li:hover {
+            background-color: #d0e7ff;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .categories-grid ul li a {
+            color: #333;
+            text-decoration: none;
+            width: 100%;
+        }   
+/*jobs*/
+.jobs-grid {
+    list-style-type: none;
+    padding-left: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Chia thành 3 cột với làm khung rộng ra */
+    gap: 20px;
+}
+.job-card {
+    display: flex;
+    padding: 30px 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    height: 299px;
+    
+}
+.job-card-left {
+    display: flex;
+    gap: 12px;
+ 
+}
+.company-logo {
+  
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+.job-card-right a {
+    text-decoration:none;
+}
+.btn-apply {
+    background-color: white;
+    color: #007bff;
+    border: 1px solid #007bff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+.job-card:hover {
+    box-shadow: none;
+    border-color: #000; /* hoặc màu bạn muốn */
+    cursor:pointer
+}
+.job-card-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+    font-size: 16px;
+}
+.btn-save{
+    width:111px;
+}
+    .btn-save:hover {
+        background-color: #ccc;
+        color: #000
+        ;
+        border: 1px solid #007bff;
+    }
+.job-card.expired {
+    opacity: 0.5; /* làm mờ */
+    pointer-events: none; /* vô hiệu hóa mọi sự kiện chuột (click, hover) */
+    cursor: not-allowed !important;
+}

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<web_jobs.Models.Employer>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+    </div>
+}
+
+@{
+    ViewData["Title"] = "Danh sách công ty";
+}
+
+<h2 class="my-4">Danh sách công ty</h2>
+
+<a asp-action="Add" class="btn btn-primary mb-3">+ Thêm công ty</a>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Hiện chưa có công ty nào được đăng ký.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Tên công ty</th>
+                <th>Email</th>
+                <th>Quy mô</th>
+                <th>Mô tả</th>
+                <th>Logo</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CompanyName</td>
+                    <td>@item.CompanyEmail</td>
+                    <td>@item.CompanySize</td>
+                    <td>
+                        @{
+                            var shortDesc = item.CompanyDescription?.Length > 50
+                            ? item.CompanyDescription.Substring(0, 50) + "..."
+                            : item.CompanyDescription;
+                        }
+                        @Html.Raw(shortDesc)
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.CompanyLogo))
+                        {
+                            <img src="~/images/@item.CompanyLogo" alt="Logo" width="80" />
+                        }
+                        else
+                        {
+                            <span class="text-muted">Chưa có</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Detail" asp-route-id="@item.ID" class="btn btn-sm btn-info">Chi tiết</a>
+                        @if (User.IsInRole("Employer"))
+                        {
+                        <a asp-action="Update" asp-route-id="@item.ID" class="btn btn-sm btn-warning">Sửa</a>
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger"
+                           onclick="return confirm('Bạn có chắc muốn xoá công ty này không?');">Xoá</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,0 +1,66 @@
+﻿@model web_jobs.Models.Employer
+@{
+    ViewData["Title"] = "Thông tin chi tiết công ty";
+}
+
+<h2 class="text-primary">Thông tin chi tiết công ty</h2>
+
+<div class="card mt-4 shadow">
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold">Tên công ty:</div>
+            <div class="col-md-9">@Model.CompanyName</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold">Email công ty:</div>
+            <div class="col-md-9">@Model.CompanyEmail</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold">Quy mô công ty:</div>
+            <div class="col-md-9">@Model.CompanySize</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold">Mô tả công ty:</div>
+            <div class="col-md-9">@Html.Raw(Model.CompanyDescription)</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold">Logo công ty:</div>
+            <div class="col-md-9">
+                @if (!string.IsNullOrEmpty(Model.CompanyLogo))
+                {
+                    <img src="~/images/@Model.CompanyLogo" alt="Logo" width="150" />
+                }
+                else
+                {
+                    <span>Chưa cập nhật</span>
+                }
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold">Giấy phép kinh doanh:</div>
+            <div class="col-md-9">
+                @if (!string.IsNullOrEmpty(Model.LicenseDocument))
+                {
+                    <a href="~/licenses/@Model.LicenseDocument" target="_blank">Xem giấy phép</a>
+                }
+                else
+                {
+                    <span>Chưa cập nhật</span>
+                }
+            </div>
+        </div>
+
+        <div class="mt-4">
+             @if (User.IsInRole("Employer"))
+             {
+                  <a href="@Url.Action("Update", new { id = Model.ID })" class="btn btn-warning">Chỉnh sửa</a>
+             }
+            <a href="@Url.Action("Index")" class="btn btn-secondary">Quay lại danh sách</a>
+        </div>
+    </div>
+</div>

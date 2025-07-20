@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Không thể xóa danh mục";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="alert alert-danger">
+    <strong>Không thể xóa danh mục này.</strong> Danh mục vẫn đang được sử dụng trong một hoặc nhiều tin tuyển dụng.
+</div>
+
+<p>Vui lòng xóa hoặc cập nhật các tin tuyển dụng liên quan trước khi xóa danh mục này.</p>
+
+<a asp-action="Index" class="btn btn-primary">Quay lại danh sách danh mục</a>

@@ -1,0 +1,43 @@
+﻿@model IEnumerable<web_jobs.Models.Employer>
+
+<h4>Danh sách công ty: <span class="text-primary fw-bold">@ViewBag.TotalCount</span></h4>
+
+<table class="table table-striped table-bordered align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>Tên công ty</th>
+            <th>Email</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var e in Model)
+        {
+            string statusText;
+            string badgeClass;
+
+            switch (e.Status?.ToLower())
+            {
+                case "approved":
+                    statusText = "🟢 Đã duyệt";
+                    badgeClass = "badge bg-success";
+                    break;
+                case "pending":
+                    statusText = "🟡 Chờ duyệt";
+                    badgeClass = "badge bg-warning text-dark";
+                    break;
+           
+                default:
+                    statusText = "❔ Không xác định";
+                    badgeClass = "badge bg-secondary";
+                    break;
+            }
+
+            <tr>
+                <td>@e.CompanyName</td>
+                <td>@e.CompanyEmail</td>
+                <td><span class="@badgeClass">@statusText</span></td>
+            </tr>
+        }
+    </tbody>
+</table>
